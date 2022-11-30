@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request
 import os
 from dotenv import load_dotenv
 import requests
@@ -40,7 +40,23 @@ def post(post_id):
         else:
             return render_template("not_found.html")
 
+@app.route("/form-entry", methods=["GET","POST"])
+def receive_data():
+
+    if request.method == "POST":
+        name = request.form['name']
+        email = request.form['email']
+        phone_num = request.form['phone']
+        msg = request.form['message']
+
+        print(name)
+        print(email)
+        print(phone_num)
+        print(msg)
+        return f"<h1>Message succesfully sent</h1>"
     
+    return render_template("contact.html")
+
 
 # auto run server when script runs
 if __name__ == "__main__":
