@@ -53,9 +53,9 @@ def receive_data():
         print(email)
         print(phone_num)
         print(msg)
-        return f"<h1>Message succesfully sent</h1>"
+        return render_template("contact.html", msg_sent=True)
     
-    return render_template("contact.html")
+    return render_template("contact.html", msg_sent=False)
 
 
 # auto run server when script runs
