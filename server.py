@@ -2,8 +2,9 @@ from flask import Flask, render_template, url_for, request
 import os
 from dotenv import load_dotenv
 import requests
+import smtplib
 
-load_dotenv('api.env')
+load_dotenv('important.env')
 app=Flask(__name__)
 
 
@@ -53,6 +54,19 @@ def receive_data():
         print(email)
         print(phone_num)
         print(msg)
+
+        if len(name) and len(email) and len(msg) !=0:
+            send_mail=os.getenv("MY_EMAIL")
+            send_password=os.getenv("PASSWORD")
+            with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
+                connection.starttls()
+                connection.login(user=send_mail, password=send_password)
+                connection.sendmail(
+                    from_addr=send_mail,
+                    to_addrs=send_mail,
+                    msg=f"Subject: Client Message.\n\nName:{name}\nEmail:{email}\nPhone:{phone_num}\nMessage:{msg}"
+
+                )
         return render_template("contact.html", msg_sent=True)
     
     return render_template("contact.html", msg_sent=False)
